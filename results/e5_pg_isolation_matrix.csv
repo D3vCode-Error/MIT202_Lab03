@@ -1,0 +1,5 @@
+isolation_level,first_amount,second_amount,non_repeatable_read,first_count,second_count,phantom_read
+READ UNCOMMITTED,100,200,True,1,2,True
+READ COMMITTED,100,200,True,1,2,True
+REPEATABLE READ,100,100,False,1,1,False
+SERIALIZABLE,100,100,False,1,1,False

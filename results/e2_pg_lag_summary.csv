@@ -1,0 +1,7 @@
+clients,standby,samples,valid_lag_ms_samples,mean_replay_lag_ms,max_replay_lag_ms,mean_replay_lag_bytes,max_replay_lag_bytes
+5,standby_1,90,75,4.001,15.63,24579.56,64472
+5,standby_2,90,75,3.647,13.116,24884.09,64472
+20,standby_1,90,85,7.507,150.973,103939.02,303784
+20,standby_2,90,85,5.642,28.33,103623.82,378712
+50,standby_1,90,82,9.546,85.426,181762.22,556792
+50,standby_2,90,82,9.495,85.484,187447.82,410472

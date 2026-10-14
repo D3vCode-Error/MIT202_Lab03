@@ -1,0 +1,3 @@
+CREATE ROLE replicator
+WITH REPLICATION LOGIN
+PASSWORD 'lab_replicator_pw';

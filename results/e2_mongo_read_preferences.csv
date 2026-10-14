@@ -1,0 +1,4 @@
+read_preference,trials,failures,average_ms,minimum_ms,maximum_ms
+primary,100,0,0.311,0.186,4.711
+primaryPreferred,100,0,0.25,0.192,0.536
+secondary,100,0,0.298,0.214,2.303

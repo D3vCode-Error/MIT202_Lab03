@@ -1,0 +1,35 @@
+
+# Python virtual environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+*secret*
+
+# PostgreSQL and database backups
+backups/
+*.dump
+*.backup
+*.sql.gz
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# IDE configuration
+.vscode/
+.idea/
+
+# Docker local overrides
+compose.override.yaml
+docker-compose.override.yml

@@ -1,0 +1,16 @@
+{
+  "write_through_values_match": true,
+  "without_lock": {
+    "clients": 50,
+    "db_load_simulations": 50,
+    "elapsed_ms": 182.989,
+    "successful_responses": 50
+  },
+  "with_lock": {
+    "clients": 50,
+    "db_load_simulations": 1,
+    "elapsed_ms": 271.479,
+    "successful_responses": 50
+  },
+  "note": "Stampede database reads are simulated using a 50 ms delayed function."
+}

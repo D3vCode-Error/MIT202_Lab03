@@ -1,0 +1,81 @@
+
+name: mit03_sharding
+
+services:
+  configsvr:
+    image: mongo:7.0
+    container_name: mit03_shard_config
+    command:
+      - mongod
+      - --configsvr
+      - --replSet
+      - cfgRS
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - config_data:/data/db
+    networks:
+      - shard_net
+
+  shard1:
+    image: mongo:7.0
+    container_name: mit03_shard1
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shardRS1
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - shard1_data:/data/db
+    networks:
+      - shard_net
+
+  shard2:
+    image: mongo:7.0
+    container_name: mit03_shard2
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shardRS2
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - shard2_data:/data/db
+    networks:
+      - shard_net
+
+  mongos:
+    image: mongo:7.0
+    container_name: mit03_mongos
+    profiles:
+      - router
+    command:
+      - mongos
+      - --configdb
+      - cfgRS/configsvr:27017
+      - --bind_ip_all
+      - --port
+      - "27017"
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
+    ports:
+      - "127.0.0.1:27217:27017"
+    networks:
+      - shard_net
+
+volumes:
+  config_data:
+  shard1_data:
+  shard2_data:
+
+networks:
+  shard_net:
+    driver: bridge

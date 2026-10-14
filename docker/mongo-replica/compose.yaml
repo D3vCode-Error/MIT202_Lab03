@@ -1,0 +1,66 @@
+
+name: mit03_mongo_replica
+
+services:
+  mongo1:
+    image: mongo:7.0
+    container_name: mit03_mongo_rs1
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - mongo_rs1_data:/data/db
+    ports:
+      - "127.0.0.1:27117:27017"
+    networks:
+      - mongo_replica_net
+
+  mongo2:
+    image: mongo:7.0
+    container_name: mit03_mongo_rs2
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - mongo_rs2_data:/data/db
+    ports:
+      - "127.0.0.1:27118:27017"
+    networks:
+      - mongo_replica_net
+
+  mongo3:
+    image: mongo:7.0
+    container_name: mit03_mongo_rs3
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - mongo_rs3_data:/data/db
+    ports:
+      - "127.0.0.1:27119:27017"
+    networks:
+      - mongo_replica_net
+
+volumes:
+  mongo_rs1_data:
+  mongo_rs2_data:
+  mongo_rs3_data:
+
+networks:
+  mongo_replica_net:
+    driver: bridge

@@ -1,0 +1,94 @@
+
+name: mit03_replication
+
+services:
+  primary:
+    image: postgres:16
+    container_name: mit03_pg_primary
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: labuser
+      POSTGRES_PASSWORD: lab_repl_pw
+      POSTGRES_DB: ecommerce
+      PGDATA: /var/lib/postgresql/data/pgdata
+    command:
+      - postgres
+      - "-c"
+      - "wal_level=replica"
+      - "-c"
+      - "max_wal_senders=10"
+      - "-c"
+      - "max_replication_slots=10"
+      - "-c"
+      - "hot_standby=on"
+      - "-c"
+      - "synchronous_commit=on"
+    volumes:
+      - pg_primary_data:/var/lib/postgresql/data
+      - ./init-primary:/docker-entrypoint-initdb.d:ro
+    networks:
+      - replication_net
+    ports:
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U labuser -d ecommerce
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  standby_1:
+    image: postgres:16
+    container_name: mit03_pg_standby1
+    restart: unless-stopped
+    profiles:
+      - replicas
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      PGPASSWORD: lab_replicator_pw
+    volumes:
+      - pg_standby1_data:/var/lib/postgresql/data
+    networks:
+      - replication_net
+    ports:
+      - "127.0.0.1:5434:5432"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U labuser -d ecommerce
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  standby_2:
+    image: postgres:16
+    container_name: mit03_pg_standby2
+    restart: unless-stopped
+    profiles:
+      - replicas
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      PGPASSWORD: lab_replicator_pw
+    volumes:
+      - pg_standby2_data:/var/lib/postgresql/data
+    networks:
+      - replication_net
+    ports:
+      - "127.0.0.1:5435:5432"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U labuser -d ecommerce
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pg_primary_data:
+  pg_standby1_data:
+  pg_standby2_data:
+
+networks:
+  replication_net:
+    driver: bridge
